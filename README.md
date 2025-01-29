@@ -3,5 +3,5 @@
 ## Production build
 https://autodesk-viewer-markups.vercel.app/
 
-## Versel Project
+## Vercel Project
 https://vercel.com/luidys-projects/autodesk-viewer-markups

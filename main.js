@@ -1,13 +1,13 @@
-import { SVG_00, SVG_01, SVG_02, LAYER_ID } from "./constants";
-import { initializeViewer } from "./utils/initializeViewer";
-import { initializeMarkupCore } from "./utils/initializeMarkupCore";
-import { initializeMarkupsGui } from "./utils/initializeMarkupsGui";
-import { loadMarkupOnSheet } from "./utils/loadMarkupOnSheet";
-import { loadManyMarkupsOnSheet } from "./utils/loadManyMarkupsOnSheet";
-import { listenerOnMarkupSelected } from "./utils/listenerOnMarkupSelected";
-import { listenerOnEditModeLeave } from "./utils/listenerOnEditModeLeave";
-import { listenerOnCreationModeEnd } from "./utils/listenerOnCreationModeEnd";
-import { enableMarkupsSelection } from "./utils/enableMarkupsSelection";
+import { SVG_00, SVG_01, SVG_02, LAYER_ID } from "./constants.js";
+import { initializeViewer } from "./utils/initializeViewer.js";
+import { initializeMarkupCore } from "./utils/initializeMarkupCore.js";
+import { initializeMarkupsGui } from "./utils/initializeMarkupsGui.js";
+import { loadMarkupOnSheet } from "./utils/loadMarkupOnSheet.js";
+import { loadManyMarkupsOnSheet } from "./utils/loadManyMarkupsOnSheet.js";
+import { listenerOnMarkupSelected } from "./utils/listenerOnMarkupSelected.js";
+import { listenerOnEditModeLeave } from "./utils/listenerOnEditModeLeave.js";
+import { listenerOnCreationModeEnd } from "./utils/listenerOnCreationModeEnd.js";
+import { enableMarkupsSelection } from "./utils/enableMarkupsSelection.js";
 
 initializeViewer("https://pdfobject.com/pdf/sample.pdf").then(async () => {
   await initializeMarkupCore();

@@ -4,6 +4,7 @@ export const MARKUP_TYPE_SELECTOR = "SELECTOR";
 
 const { EditMode } = Autodesk.Extensions.Markup.Core;
 
+// This function was based on the MarkupArrow function (/extensions/Markup/core/MarkupArrow.js)
 export function EditModeSelector(editor) {
   var styleAttributes = ["stroke-width", "stroke-color", "stroke-opacity"];
   EditMode.call(this, editor, MARKUP_TYPE_SELECTOR, styleAttributes);

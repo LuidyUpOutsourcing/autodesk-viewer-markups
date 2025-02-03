@@ -1,4 +1,4 @@
-import { EditModeSelector } from "./edit-modes/EditModeSelector";
+import { EditModeSelector } from "./edit-modes/EditModeSelector.js";
 
 function disableLayerMarkups(layer, disable) {
   if (layer) {

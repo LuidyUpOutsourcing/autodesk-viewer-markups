@@ -1,5 +1,3 @@
-import { EditModeSelector } from "./edit-modes/EditModeSelector.js";
-
 function disableLayerMarkups(layer, disable) {
   if (layer) {
     var layerMarkups = layer.markups;
@@ -11,7 +9,11 @@ function disableLayerMarkups(layer, disable) {
 }
 
 // Base: MarkupsCore.prototype.enterEditMode
-export const enableMarkupsSelection = (layerId) => {
+export const enableMarkupsSelection = async (layerId) => {
+  // The EditModeSelector file has dependencies on Autodesk.Extensions.Markup.Core
+  // and can only be loaded after Autodesk Viewer is launched.
+  const { EditModeSelector } = await import("./edit-modes/EditModeSelector.js");
+
   console.log("enableMarkupsSelection");
   if (layerId) {
     if (!window.Markup.svgLayersMap[layerId]) {

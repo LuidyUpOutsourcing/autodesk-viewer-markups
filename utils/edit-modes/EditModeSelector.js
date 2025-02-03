@@ -2,7 +2,7 @@
 
 export const MARKUP_TYPE_SELECTOR = "SELECTOR";
 
-const { EditMode } = Autodesk?.Extensions?.Markup?.Core;
+const { EditMode } = Autodesk.Extensions.Markup.Core;
 
 export function EditModeSelector(editor) {
   var styleAttributes = ["stroke-width", "stroke-color", "stroke-opacity"];

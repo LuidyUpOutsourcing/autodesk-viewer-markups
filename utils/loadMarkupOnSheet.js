@@ -1,4 +1,4 @@
-export const loadMarkupOnSheet = async (markupSvg, layerId) => {
-  window.Markup.show(); // Enables loading of previously saved markups.
-  window.Markup.loadMarkups(markupSvg, layerId);
+export const loadMarkupOnSheet = async ({markupSvg, layerId, markupsCore }) => {
+  markupsCore.show(); // Enables loading of previously saved markups.
+  markupsCore.loadMarkups(markupSvg, layerId);
 };

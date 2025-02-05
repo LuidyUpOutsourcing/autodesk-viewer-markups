@@ -1,21 +1,30 @@
 import { SVG_00, LAYER_ID } from "./constants.js";
-import { initializeViewer } from "./utils/initializeViewer.js";
-import { initializeMarkupCore } from "./utils/initializeMarkupCore.js";
+import { initializeViewing } from "./utils/initializers/initializeViewing.js";
+import { initializeAutodeskPDF } from "./utils/initializers/initializeAutodeskPDF.js";
+import { initializeMarkupCore } from "./utils/initializers/initializeMarkupCore.js";
 import { loadMarkupOnSheet } from "./utils/loadMarkupOnSheet.js";
-import { listenerOnMarkupSelected } from "./utils/listenerOnMarkupSelected.js";
-import { listenerOnEditModeLeave } from "./utils/listenerOnEditModeLeave.js";
-import { listenerOnCreationModeEnd } from "./utils/listenerOnCreationModeEnd.js";
+import { addOnMarkupSelectedListener } from "./utils/listeners/addOnMarkupSelectedListener.js";
+import { addOnEditModeLeaveListener } from "./utils/listeners/addOnEditModeLeaveListener.js";
+import { addOnCreationModeEndListener } from "./utils/listeners/addOnCreationModeEndListener.js";
 import { enableMarkupsSelection } from "./utils/enableMarkupsSelection.js";
-import { overwriteSelectMarkup } from "./utils/markup-core-overwites/overwriteSelectMarkup.js";
 
-initializeViewer("https://pdfobject.com/pdf/sample.pdf").then(async () => {
-  await initializeMarkupCore();
-  await loadMarkupOnSheet(SVG_00, LAYER_ID);
-  overwriteSelectMarkup(window.Markup);
-  await enableMarkupsSelection(LAYER_ID);
+const setupAutodesk = async () => {
+  try {
+    const guiViewer3D = await initializeViewing();
+    await initializeAutodeskPDF('./assets/sample.pdf', guiViewer3D);
+    const markupsCore = await initializeMarkupCore(guiViewer3D);
 
-  // Listeners
-  listenerOnMarkupSelected();
-  listenerOnEditModeLeave();
-  listenerOnCreationModeEnd();
-});
+    await loadMarkupOnSheet({markupSvg: SVG_00, layerId: LAYER_ID, markupsCore });    
+    await enableMarkupsSelection(LAYER_ID, markupsCore);
+  
+    // Add Event Listeners
+    addOnMarkupSelectedListener(markupsCore);
+    addOnEditModeLeaveListener(markupsCore);
+    addOnCreationModeEndListener(markupsCore);
+  } catch (error) {
+    console.log('Error: ', error.message)
+  }
+}
+
+setupAutodesk();
+

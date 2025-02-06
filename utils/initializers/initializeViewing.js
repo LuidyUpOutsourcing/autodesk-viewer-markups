@@ -14,6 +14,10 @@ export const initializeViewing = async () => {
       throw new Error("Failed on creating Viewer. Please try load project again.");
     }
 
+    // Initial settings:
+    guiViewer3D.disableHighlight(true); // Disables PDF mouseOver highlighting.
+    guiViewer3D.disableSelection(true); // Disables PDF selection.
+
     return guiViewer3D;
   } catch (error) {
     const failureMessage = "Error on initializeViewer: " + error.message;

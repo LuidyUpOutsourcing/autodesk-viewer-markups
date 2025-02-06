@@ -1,20 +1,15 @@
-function disableLayerMarkups(layer, disable) {
-  if (layer) {
-    var layerMarkups = layer.markups;
-    for (var k = 0; k < layerMarkups.length; k++) {
-      var m = layerMarkups[k];
-      m.disableInteractions(disable);
-    }
-  }
-}
-
 // Base: MarkupsCore.prototype.enterEditMode
 export const enableMarkupsSelection = async (layerId, markupsCore) => {
-  // The EditModeSelector file has dependencies on Autodesk.Extensions.Markup.Core
-  // and can only be loaded after Autodesk Viewer is launched.
-  const { EditModeSelector } = await import("./edit-modes/EditModeSelector.js");
+  const disableLayerMarkups = (layer, disable) => {
+    if (layer) {
+      var layerMarkups = layer.markups;
+      for (var k = 0; k < layerMarkups.length; k++) {
+        var m = layerMarkups[k];
+        m.disableInteractions(disable);
+      }
+    }
+  }
 
-  console.log("enableMarkupsSelection");
   if (layerId) {
     if (!markupsCore.svgLayersMap[layerId]) {
       // if layerId is supplied but it does not exist in the svgLayerMap then create the new layer
@@ -118,7 +113,7 @@ export const enableMarkupsSelection = async (layerId, markupsCore) => {
   markupsCore.styles = {}; // Clear EditMode styles.
   markupsCore.defaultStyle = null;
   markupsCore.duringEditMode = true;
-  markupsCore.changeEditMode(new EditModeSelector(markupsCore));
+  markupsCore.changeEditMode(new Autodesk.Extensions.Markup.Core.EditModeSelector(markupsCore));
   markupsCore.actionManager.clear(); // Clears the action history (Same as used for 'undo' and 'redo' actions)
   markupsCore.dispatchEvent({ type: "EVENT_EDITMODE_ENTER" });
   markupsCore.allowNavigation(false);

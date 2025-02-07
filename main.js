@@ -18,8 +18,6 @@ import { addOnEditModeLeaveListener } from "./utils/listeners/addOnEditModeLeave
 import { addOnCreationModeEndListener } from "./utils/listeners/addOnCreationModeEndListener.js";
 
 import { loadMarkupOnSheet } from "./utils/loadMarkupOnSheet.js";
-import { enableMarkupsSelection } from "./utils/enableMarkupsSelection.js";
-
 
 const setupAutodesk = async () => {
   try {

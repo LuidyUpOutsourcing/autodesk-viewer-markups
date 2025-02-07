@@ -116,7 +116,7 @@ export default () => {
     markupsCore.duringEditMode = true;
     markupsCore.changeEditMode(new Autodesk.Extensions.Markup.Core.EditModeSelector(markupsCore));
     markupsCore.actionManager.clear(); // Clears the action history (Same as used for 'undo' and 'redo' actions)
-    markupsCore.dispatchEvent({ type: "EVENT_EDITMODE_ENTER" });
+    markupsCore.dispatchEvent({ type: Autodesk.Extensions.Markup.Core.MarkupEvents.EVENT_EDITMODE_ENTER });
     markupsCore.allowNavigation(false);
     return true;
   };

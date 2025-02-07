@@ -34,7 +34,7 @@ const setupAutodesk = async () => {
     addEnterSelectionMode();
 
     await loadMarkupOnSheet({ markupSvg: SVG_00, layerId: LAYER_ID, markupsCore });
-    await enableMarkupsSelection(LAYER_ID, markupsCore);
+    window.markupsCore.enterSelectionMode(LAYER_ID, markupsCore);
 
     // Add Event Listeners
     addOnMarkupSelectedListener(markupsCore);

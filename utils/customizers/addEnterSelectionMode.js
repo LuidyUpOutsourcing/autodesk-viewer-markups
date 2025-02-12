@@ -1,6 +1,6 @@
 export default () => {
-  // Base: MarkupsCore.prototype.enterEditMode
-  window.markupsCore.enterSelectionMode = (layerId, markupsCore) => {
+  // Base: window.markupsCore.prototype.enterEditMode
+  window.window.markupsCore.enterSelectionMode = (layerId) => {
     const disableLayerMarkups = (layer, disable) => {
       if (layer) {
         var layerMarkups = layer.markups;
@@ -12,7 +12,7 @@ export default () => {
     }
 
     if (layerId) {
-      if (!markupsCore.svgLayersMap[layerId]) {
+      if (!window.markupsCore.svgLayersMap[layerId]) {
         // if layerId is supplied but it does not exist in the svgLayerMap then create the new layer
         console.warn("No such layer exists.");
         return false;
@@ -20,49 +20,49 @@ export default () => {
     }
 
     // If not currently shown, then show
-    if (!markupsCore.duringViewMode) {
-      if (!markupsCore.show()) {
+    if (!window.markupsCore.duringViewMode) {
+      if (!window.markupsCore.show()) {
         return false; // Failed to enter view mode.
       }
     }
 
     // // Initialize the edit mode layer if it does not exist
-    if (!markupsCore.editModeSvgLayerNode) {
-      var parSvg = markupsCore.createSvgElement("g");
-      markupsCore.editModeSvgLayerNode = {
+    if (!window.markupsCore.editModeSvgLayerNode) {
+      var parSvg = window.markupsCore.createSvgElement("g");
+      window.markupsCore.editModeSvgLayerNode = {
         markups: [],
         svg: parSvg,
       };
-      markupsCore.editModeSvgLayerNode.svg.setAttribute("cursor", "default");
+      window.markupsCore.editModeSvgLayerNode.svg.setAttribute("cursor", "default");
     }
 
     if (
-      markupsCore.editModeSvgLayerNode.svg.parentNode != markupsCore.svg ||
+      window.markupsCore.editModeSvgLayerNode.svg.parentNode != window.markupsCore.svg ||
       !layerId
     ) {
-      markupsCore.svg.appendChild(markupsCore.editModeSvgLayerNode.svg);
+      window.markupsCore.svg.appendChild(window.markupsCore.editModeSvgLayerNode.svg);
     }
-    markupsCore.svg.setAttribute("cursor", "crosshair");
+    window.markupsCore.svg.setAttribute("cursor", "crosshair");
 
     if (layerId) {
-      var layer = markupsCore.svgLayersMap[layerId];
+      var layer = window.markupsCore.svgLayersMap[layerId];
       // If the layer exists in the layer map, use the information stored for that specific layer.
       if (layer) {
         // Remove the edit layer when entering edit mode of a specific edit mode.
         var editModeLayerParentNode =
-          markupsCore.editModeSvgLayerNode.svg.parentNode;
+          window.markupsCore.editModeSvgLayerNode.svg.parentNode;
         editModeLayerParentNode &&
           editModeLayerParentNode.removeChild(
-            markupsCore.editModeSvgLayerNode.svg
+            window.markupsCore.editModeSvgLayerNode.svg
           );
 
         // disable the markups in the editModeLayer
-        disableLayerMarkups(markupsCore.editModeSvgLayerNode, true);
+        disableLayerMarkups(window.markupsCore.editModeSvgLayerNode, true);
 
         // Enable interactions for markups in the current edit layer and disable interactions for markups in
         // the other layers.
-        for (var key in markupsCore.svgLayersMap) {
-          var markups = markupsCore.svgLayersMap[key].markups;
+        for (var key in window.markupsCore.svgLayersMap) {
+          var markups = window.markupsCore.svgLayersMap[key].markups;
           for (var i = 0; i < markups.length; i++) {
             var markup = markups[i];
             if (key !== layerId.toString()) {
@@ -76,48 +76,40 @@ export default () => {
         }
 
         // assign the current layer to the global active layer
-        markupsCore.activeLayer = layerId;
-        markupsCore.editingLayer = layerId;
+        window.markupsCore.activeLayer = layerId;
+        window.markupsCore.editingLayer = layerId;
         var svgParent = layer.svg;
 
         // remove previous svg layer child from svg
-        svgParent.parentNode && markupsCore.svg.removeChild(svgParent);
+        svgParent.parentNode && window.markupsCore.svg.removeChild(svgParent);
 
         // reassign the markups in that layer to the global markups list
-        markupsCore.markups = layer.markups.slice();
+        window.markupsCore.markups = layer.markups.slice();
 
         // re-append svg layer child to svg to make it the top most layer
-        markupsCore.svg.appendChild(svgParent);
+        window.markupsCore.svg.appendChild(svgParent);
       }
     } else {
-      // disable interactions for the previous markups
-      // Example: enterEditMode(layer) -> enterEditMode()
-      if (markupsCore.editingLayer) {
-        for (var k = 0; k < markupsCore.markups.length; k++) {
-          var m = markupsCore.markups[k];
-          m.disableInteractions(true);
-        }
-        disableLayerMarkups(markupsCore.editModeSvgLayerNode, false);
-      }
-      markupsCore.editingLayer = "";
-      if (!markupsCore.editModeSvgLayerNode) {
-        markupsCore.markups = [];
-      } else {
-        markupsCore.markups =
-          markupsCore.editModeSvgLayerNode.markups.slice();
-      }
-      markupsCore.activeLayer = "";
+      // enables interaction with all layers
+      var layers = Object.keys(window.markupsCore.svgLayersMap);
+      layers.forEach(id => {
+        // reassign the markups in each layer to the global markups list
+        window.markupsCore.markups = [
+          ...window.markupsCore.markups,
+          ...window.markupsCore.svgLayersMap[id].markups.slice()
+        ];
+      });
     }
 
-    markupsCore.input.enterEditMode();
-    markupsCore.activateTool(true);
-    markupsCore.styles = {}; // Clear EditMode styles.
-    markupsCore.defaultStyle = null;
-    markupsCore.duringEditMode = true;
-    markupsCore.changeEditMode(new Autodesk.Extensions.Markup.Core.EditModeSelector(markupsCore));
-    markupsCore.actionManager.clear(); // Clears the action history (Same as used for 'undo' and 'redo' actions)
-    markupsCore.dispatchEvent({ type: Autodesk.Extensions.Markup.Core.MarkupEvents.EVENT_EDITMODE_ENTER });
-    markupsCore.allowNavigation(false);
+    window.markupsCore.input.enterEditMode();
+    window.markupsCore.activateTool(true);
+    window.markupsCore.styles = {}; // Clear EditMode styles.
+    window.markupsCore.defaultStyle = null;
+    window.markupsCore.duringEditMode = true;
+    window.markupsCore.changeEditMode(new Autodesk.Extensions.Markup.Core.EditModeSelector(window.markupsCore));
+    window.markupsCore.actionManager.clear(); // Clears the action history (Same as used for 'undo' and 'redo' actions)
+    window.markupsCore.dispatchEvent({ type: Autodesk.Extensions.Markup.Core.MarkupEvents.EVENT_EDITMODE_ENTER });
+    window.markupsCore.allowNavigation(false);
     return true;
   };
 }

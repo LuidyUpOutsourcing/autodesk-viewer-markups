@@ -9,5 +9,30 @@ export default () => {
         styleAttributes
       );
     }
+
+    destroy = () => { }
+    // unselect = () => {}
+    creationBegin = () => { }
+    creationEnd = () => { }
+    creationCancel = () => { }
+    // setStyle = () => {}
+    // getStyle = () => {}
+    // setSelection = () => {}
+    // getSelection = () => {}
+    deleteMarkup = () => { }
+    isMinSizeValid = () => { }
+    startDragging = () => { }
+    finishDragging = () => { }
+    getFinalMouseDraggingPosition = () => { }
+    notifyAllowNavigation = () => { }
+    onMouseMove = () => { }
+    onMouseDown = () => { }
+    onMouseUp = () => { }
+    onMouseDoubleClick = () => { }
+    onSave = () => { }
+    getDraggingPosition = () => { }
+    isInsideBounds = () => { }
+    useWithSnapping = () => { }
+    isTextInputHelperActive = () => { }
   }
 }

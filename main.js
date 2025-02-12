@@ -1,4 +1,4 @@
-import { SVG_00, LAYER_ID } from "./constants.js";
+import { SVG_ARROW, SVG_RETANGLE, SVG_POLYLINE, SVG_FREEEHAND, SVG_ELLIPSE } from "./constants.js";
 
 // Cutomizations:
 import changeSelectMarkup from "./utils/customizers/changeSelectMarkup.js";
@@ -23,8 +23,7 @@ const setupAutodesk = async () => {
   try {
     const guiViewer3D = await initializeViewing();
     await initializeAutodeskPDF('./assets/sample.pdf', guiViewer3D);
-    const markupsCore = await initializeMarkupCore(guiViewer3D);
-    window.markupsCore = markupsCore;
+    window.markupsCore = await initializeMarkupCore(guiViewer3D);
     await initializeMarkupsGui(guiViewer3D);
 
     // Cutomizations:
@@ -33,13 +32,19 @@ const setupAutodesk = async () => {
     changeSelectMarkup();
     addEnterSelectionMode();
 
-    await loadMarkupOnSheet({ markupSvg: SVG_00, layerId: LAYER_ID, markupsCore });
-    window.markupsCore.enterSelectionMode(LAYER_ID, markupsCore);
+    loadMarkupOnSheet({ markupSvg: SVG_ARROW, layerId: 'arrow-005' });
+    loadMarkupOnSheet({ markupSvg: SVG_RETANGLE, layerId: 'retangle-100' });
+    loadMarkupOnSheet({ markupSvg: SVG_POLYLINE, layerId: 'polyline-102' });
+    loadMarkupOnSheet({ markupSvg: SVG_FREEEHAND, layerId: 'freehand-104' });
+    loadMarkupOnSheet({ markupSvg: SVG_ELLIPSE, layerId: 'ellipse-103' });
+
+    window.markupsCore.enterSelectionMode();
+    // window.markupsCore.enterEditMode();
 
     // Add Event Listeners
-    addOnMarkupSelectedListener(markupsCore);
-    addOnEditModeLeaveListener(markupsCore);
-    addOnCreationModeEndListener(markupsCore);
+    addOnMarkupSelectedListener(window.markupsCore);
+    addOnEditModeLeaveListener(window.markupsCore);
+    addOnCreationModeEndListener(window.markupsCore);
   } catch (error) {
     console.log('Error: ', error.message)
   }
